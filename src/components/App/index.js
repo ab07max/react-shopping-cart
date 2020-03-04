@@ -2,12 +2,14 @@ import React from 'react';
 
 import Shelf from '../Shelf';
 import Filter from '../Shelf/Filter';
-import GithubCorner from '../github/Corner';
+// import GithubCorner from '../github/Corner';
 import FloatCart from '../FloatCart';
+import NavBar from '../NavigationBar';
 
 const App = () => (
   <React.Fragment>
-    <GithubCorner />
+    {/* <GithubCorner /> */}
+    <NavBar />
     <main>
       <Filter />
       <Shelf />
