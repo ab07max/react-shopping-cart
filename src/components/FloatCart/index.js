@@ -6,6 +6,7 @@ import { loadCart, removeProduct, changeProductQuantity } from '../../services/c
 import { updateCart } from '../../services/total/actions';
 import CartProduct from './CartProduct';
 import { formatPrice } from '../../services/util';
+import StripeCheckout from 'react-stripe-checkout';
 
 import './style.scss';
 
@@ -76,6 +77,10 @@ class FloatCart extends Component {
     }
   };
 
+  handleToken = (token, addresses) => {
+    console.log({token, addresses})
+  };
+
   proceedToCheckout = () => {
     const {
       totalPrice,
@@ -93,6 +98,7 @@ class FloatCart extends Component {
           currencyId
         )}`
       );
+      
     }
   };
 
@@ -184,9 +190,19 @@ class FloatCart extends Component {
                 )}
               </small>
             </div>
-            <div onClick={() => this.proceedToCheckout()} className="buy-btn">
+            {/* <div onClick={() => this.proceedToCheckout()} className="buy-btn">
               Checkout
-            </div>
+            </div> */}
+
+            {products.length ? (
+              <StripeCheckout
+              stripeKey="pk_test_51Gz9KQGHy1by6FZySJ4GAm5mSLm4IasS3POgkOwDDuNFSg2o7HpEMJzWdsxD938QeArY81c8mzvEb2u2L37B5fQL00FqqpYD1s"
+              token={this.handleToken}
+              triggerEvent="onClick"
+              >
+              <div onClick={() => this.proceedToCheckout()} className="buy-btn">Checkout</div>
+            </StripeCheckout>
+            ) : <div className="disable-buy-btn">Checkout</div>}
           </div>
         </div>
       </div>
