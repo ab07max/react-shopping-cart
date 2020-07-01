@@ -7,8 +7,13 @@ import { updateCart } from '../../services/total/actions';
 import CartProduct from './CartProduct';
 import { formatPrice } from '../../services/util';
 import StripeCheckout from 'react-stripe-checkout';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 import './style.scss';
+
+toast.configure();
 
 class FloatCart extends Component {
   static propTypes = {
@@ -77,8 +82,24 @@ class FloatCart extends Component {
     }
   };
 
-  handleToken = (token, addresses) => {
-    console.log({token, addresses})
+  handleToken = async(token) => {
+    //console.log({token});
+    const { cartProducts, updateCart } = this.props;
+    // console.log({cartProducts})
+    const response = await axios.post('http://localhost:8001/checkout', {
+      token,
+      cartProducts
+    });
+    const { status } = response.data;
+    if (status === "success") {
+      toast("Success! Check email for details", { type: "success" });
+      cartProducts.forEach(cp => {
+        this.removeProduct(cp);
+        updateCart(cartProducts);
+      });
+    } else {
+      toast("Something went wrong", { type: "error" });
+    }
   };
 
   proceedToCheckout = () => {
@@ -196,8 +217,20 @@ class FloatCart extends Component {
 
             {products.length ? (
               <StripeCheckout
-              stripeKey="pk_test_51Gz9KQGHy1by6FZySJ4GAm5mSLm4IasS3POgkOwDDuNFSg2o7HpEMJzWdsxD938QeArY81c8mzvEb2u2L37B5fQL00FqqpYD1s"
+              name="ABC Company Co."
+              description="Company Description"
+              image=""
+              ComponentClass="div"
+              currency={cartTotal.currencyId}
+
+              stripeKey={process.env.REACT_APP_STRIPE_PK}
               token={this.handleToken}
+              billingAddress
+              shippingAddress
+              alipay
+              bitcoin
+              allowRememberMe
+              amount={cartTotal.totalPrice * 100}
               triggerEvent="onClick"
               >
               <div onClick={() => this.proceedToCheckout()} className="buy-btn">Checkout</div>
