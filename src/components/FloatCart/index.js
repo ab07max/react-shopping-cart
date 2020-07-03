@@ -82,10 +82,20 @@ class FloatCart extends Component {
     }
   };
 
-  handleToken = async(token) => {
-    //console.log({token});
+  clearCart = () => {
     const { cartProducts, updateCart } = this.props;
-    // console.log({cartProducts})
+    console.log(cartProducts);
+    let cartProdIndex = cartProducts.length - 1;
+    while (cartProdIndex + 1) {
+      cartProducts[cartProdIndex].quantity = 0;
+      this.changeProductQuantity(cartProducts[cartProdIndex]);
+      cartProdIndex -= 1;
+    }
+  };
+
+  proceedToCheckout = async(token) => {
+    const { cartProducts, updateCart } = this.props;
+    //console.log({cartProducts})
     const response = await axios.post('http://localhost:8001/checkout', {
       token,
       cartProducts
@@ -93,33 +103,9 @@ class FloatCart extends Component {
     const { status } = response.data;
     if (status === "success") {
       toast("Success! Check email for details", { type: "success" });
-      cartProducts.forEach(cp => {
-        this.removeProduct(cp);
-        updateCart(cartProducts);
-      });
+      this.clearCart();
     } else {
       toast("Something went wrong", { type: "error" });
-    }
-  };
-
-  proceedToCheckout = () => {
-    const {
-      totalPrice,
-      productQuantity,
-      currencyFormat,
-      currencyId
-    } = this.props.cartTotal;
-
-    if (!productQuantity) {
-      alert('Add some product in the cart!');
-    } else {
-      alert(
-        `Checkout - Subtotal: ${currencyFormat} ${formatPrice(
-          totalPrice,
-          currencyId
-        )}`
-      );
-      
     }
   };
 
@@ -211,7 +197,7 @@ class FloatCart extends Component {
                 )}
               </small>
             </div>
-            {/* <div onClick={() => this.proceedToCheckout()} className="buy-btn">
+            {/* <div onClick={() => this.clearCart()} className="buy-btn">
               Checkout
             </div> */}
 
@@ -222,9 +208,8 @@ class FloatCart extends Component {
               image=""
               ComponentClass="div"
               currency={cartTotal.currencyId}
-
               stripeKey={process.env.REACT_APP_STRIPE_PK}
-              token={this.handleToken}
+              token={this.proceedToCheckout}
               billingAddress
               shippingAddress
               alipay
@@ -233,7 +218,7 @@ class FloatCart extends Component {
               amount={cartTotal.totalPrice * 100}
               triggerEvent="onClick"
               >
-              <div onClick={() => this.proceedToCheckout()} className="buy-btn">Checkout</div>
+              <div className="buy-btn">Checkout</div>
             </StripeCheckout>
             ) : <div className="disable-buy-btn">Checkout</div>}
           </div>

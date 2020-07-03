@@ -32,16 +32,17 @@ app.post('/checkout', async (req, res) => {
     });
 
     cartProducts.forEach(cp => {
-      totalPrice += cp.price;
+      totalPrice += cp.price * cp.quantity;
       productDescription += cp.title + ","
     });
 
     productDescription = productDescription.substring(0, productDescription.length - 1);
 
     const idempotency_key = uuidv4();
+    let totalPriceInCents = Math.floor(totalPrice * 100);
     const charge = await stripe.charges.create(
       {
-        amount: totalPrice * 100,
+        amount: totalPriceInCents,
         currency: "usd",
         customer: customer.id,
         receipt_email: token.email,
