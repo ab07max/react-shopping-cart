@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import './style.scss';
 
+import firebase from '../../services/firebase';
+
 toast.configure();
 
 class FloatCart extends Component {
@@ -102,6 +104,8 @@ class FloatCart extends Component {
     });
     const { status } = response.data;
     if (status === "success") {
+      let checkoutRef = firebase.database().ref('checkout');
+      firebase.database().ref('checkout').push({token, cartProducts});
       toast("Success! Check email for details", { type: "success" });
       this.clearCart();
     } else {
