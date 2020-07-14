@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import "firebase/auth";
 
 var firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
@@ -11,6 +12,7 @@ var firebaseConfig = {
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
   };
 
-firebase.initializeApp(firebaseConfig);
+var app = firebase.initializeApp(firebaseConfig);
+app.auth().signInAnonymously();
 
 export default firebase;
