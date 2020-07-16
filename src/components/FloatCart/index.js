@@ -98,7 +98,7 @@ class FloatCart extends Component {
   proceedToCheckout = async(token) => {
     const { cartProducts, updateCart } = this.props;
     //console.log({cartProducts})
-    const response = await axios.post('http://localhost:8001/checkout', {
+    const response = await axios.post('http://localhost:5000/checkout', {
       token,
       cartProducts
     });

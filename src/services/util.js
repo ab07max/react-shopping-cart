@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export const formatPrice = (x, currency) => {
   switch (currency) {
     case 'BRL':
@@ -7,6 +9,6 @@ export const formatPrice = (x, currency) => {
   }
 };
 
-export const productsAPI = 'https://react-shopping-cart-988d9.firebaseio.com/products.json';
+export const productsAPI = process.env.REACT_APP_FIREBASE_DATABASE + '/products.json';
 
 //export const productsAPI = "http://localhost:8001/api/products";
