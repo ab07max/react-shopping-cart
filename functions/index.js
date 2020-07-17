@@ -1,3 +1,4 @@
+
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
@@ -7,13 +8,15 @@ const { request, response } = require('express');
 const stripe = require("stripe")(String(process.env.REACT_APP_STRIPE_SK));
 const {"v4": uuidv4} = require('uuid');
 
+const admin = require('firebase-admin');
+admin.initializeApp();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post('/checkout', async (req, res) => {
+app.post('/', async (req, res) => {
     console.log("Request:", req.body);
-  
     let error;
     let status;
     let totalPrice = 0;
@@ -65,8 +68,7 @@ app.post('/checkout', async (req, res) => {
       console.error("Error:", error);
       status = "failure";
     }
-    res.set('Cache-control', 'public, max-age=300, s-maxage=600');
-    res.send({ error, status });
+    res.status(200).send({ error, status });
   });
 
-exports.app = functions.https.onRequest(app);
+exports.checkout = functions.https.onRequest(app);

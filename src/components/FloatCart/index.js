@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import './style.scss';
 
 import firebase from '../../services/firebase';
-
+require('dotenv').config();
 toast.configure();
 
 class FloatCart extends Component {
@@ -96,16 +96,16 @@ class FloatCart extends Component {
   };
 
   proceedToCheckout = async(token) => {
+    const checkoutRef = firebase.database().ref('checkout');
     const { cartProducts, updateCart } = this.props;
     //console.log({cartProducts})
-    const response = await axios.post('http://localhost:5000/checkout', {
+    const response = await axios.post(process.env.REACT_APP_FIREBASE_FUNCTION_CHECKOUT, {
       token,
       cartProducts
     });
     const { status } = response.data;
     if (status === "success") {
-      let checkoutRef = firebase.database().ref('checkout');
-      firebase.database().ref('checkout').push({token, cartProducts});
+      checkoutRef.push({token, cartProducts});
       toast("Success! Check email for details", { type: "success" });
       this.clearCart();
     } else {
