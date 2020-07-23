@@ -103,6 +103,12 @@ class FloatCart extends Component {
       token,
       cartProducts
     });
+
+    // const response = await axios.post('http://localhost:5000/checkout', {
+    //   token,
+    //   cartProducts
+    // });
+
     const { status } = response.data;
     if (status === "success") {
       checkoutRef.push({token, cartProducts});

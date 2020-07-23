@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/', async (req, res) => {
+//app.post('/checkout', async (req, res) => {
     console.log("Request:", req.body);
     let error;
     let status;

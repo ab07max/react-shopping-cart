@@ -27,8 +27,10 @@ export const fetchProducts = (filters, sortBy, callback) => dispatch => {
     let { products } = snapshot.val();
     if (!!filters && filters.length > 0) {
       products = products.filter(p =>
-        filters.find(f => p.availableSizes.find(size => size === f))
+        filters.find(f => p.keywords.find(keyword => keyword === f)) || filters.find(find => p.meetingDate.find(meet => meet === find))
       );
+
+      // Code for Second filter
     }
 
     if (!!sortBy) {

@@ -13,16 +13,15 @@ const Product = ({ product, addProduct }) => {
 
   let productInstallment;
 
-  if (!!product.installments) {
-    const installmentPrice = product.price / product.installments;
+  if (!!product.startDate) {
+    //const installmentPrice = product.price / product.installments;
 
     productInstallment = (
       <div className="installment">
-        <span>or {product.installments} x</span>
-        <b>
-          {product.currencyFormat}
-          {formatPrice(installmentPrice, product.currencyId)}
-        </b>
+        <span><b>{product.startDate} - {product.endDate}</b></span><br/>
+        {product.meetingDate} | {product.meetingTime}
+          {/* {product.currencyFormat}
+          {formatPrice(installmentPrice, product.currencyId)} */}
       </div>
     );
   }
@@ -31,16 +30,24 @@ const Product = ({ product, addProduct }) => {
     <div
       className="shelf-item"
       onClick={() => addProduct(product)}
-      data-sku={product.sku}
+      data-sku={product.thumbnailUrl}
     >
-      {product.isFreeShipping && (
+      {/* {product.isFreeShipping && (
         <div className="shelf-stopper">Free shipping</div>
-      )}
+      )} */}
+      <div className="shelf-stopper">Registration ends {product.registrationEnd}</div>
+
       <Thumb
         classes="shelf-item__thumb"
-        src={require(`../../../../static/products/${product.sku}_1.jpg`)}
+        src={require(`../../../../static/products/${product.thumbnailUrl}.jpg`)}
         alt={product.title}
+        title={product.title}
+        description={product.Description}
+        pre={product.prerequisite}
+        requirement={product.Requirement}
+
       />
+
       <p className="shelf-item__title">{product.title}</p>
       <div className="shelf-item__price">
         <div className="val">

@@ -8,7 +8,9 @@ import Checkbox from '../../Checkbox';
 
 import './style.scss';
 
-const availableSizes = ['XS', 'S', 'M', 'ML', 'L', 'XL', 'XXL'];
+const keywords = ['Programming', 'Python', 'Scratch', 'Math'];
+
+const meeting = ['Saturday', 'Sunday'];
 
 class Filter extends Component {
   static propTypes = {
@@ -18,6 +20,7 @@ class Filter extends Component {
 
   componentDidMount() {
     this.selectedCheckboxes = new Set();
+    this.selectedCheckboxesMeeting = new Set();
   }
 
   toggleCheckbox = label => {
@@ -30,8 +33,18 @@ class Filter extends Component {
     this.props.updateFilters(Array.from(this.selectedCheckboxes));
   };
 
+  toggleCheckboxMeeting = label => {
+    if (this.selectedCheckboxesMeeting.has(label)) {
+      this.selectedCheckboxesMeeting.delete(label);
+    } else {
+      this.selectedCheckboxesMeeting.add(label);
+    }
+
+    this.props.updateFilters(Array.from(this.selectedCheckboxesMeeting));
+  };
+
   createCheckbox = label => (
-    <Checkbox
+      <Checkbox
       classes="filters-available-size"
       label={label}
       handleCheckboxChange={this.toggleCheckbox}
@@ -39,13 +52,26 @@ class Filter extends Component {
     />
   );
 
-  createCheckboxes = () => availableSizes.map(this.createCheckbox);
+  createCheckboxMeeting = label => (
+    <Checkbox
+      classes="filters-available-size"
+      label={label}
+      handleCheckboxChange={this.toggleCheckboxMeeting}
+      key={label}
+    />
+  );
+
+  createCheckboxes = () => keywords.map(this.createCheckbox);
+
+  createCheckboxesMeeting = () => meeting.map(this.createCheckboxMeeting);
 
   render() {
     return (
       <div className="filters">
-        <h4 className="title">Sizes:</h4>
+        <h4 className="title">Keywords:</h4>
         {this.createCheckboxes()}
+        <h4 className="title">Meetings:</h4>
+        {this.createCheckboxesMeeting()}
         {/* <GithubStarButton /> */}
       </div>
     );
