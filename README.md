@@ -1,7 +1,6 @@
 ## Basic Overview - [Live Demo](https://vtrainonlinelearning.firebaseapp.com/)
 
-This simple shopping cart prototype shows how React components and Redux can be used to build a
-friendly user experience with instant visual updates and scaleable code in ecommerce applications.
+A dynamic E-commerce web application with industry standard search filters, integrations to payment methods implementing the “Pay as you learn” strategy. This will solve the problem of eliminating the need of face-to-face sessions and it will also be favored by the learner, as the strategy suggests, you only pay for what you learn. As soon as the payment is successful, the learner receives an email entailing all the registration details, instructor details and webex/ zoom links.
 
 #### Features
 
