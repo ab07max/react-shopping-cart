@@ -6,13 +6,12 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "headers": [{
-      "source": "/service-worker.js", 
-      "headers": [{
-        "key": "Cache-Control", 
-        "value": "no-cache"
-      }]
-    }],
+    "headers": [
+      { "source":"/service-worker.js", "headers": [{"key": "Cache-Control", "value": "no-cache"}, 
+        {"key": "Set-Cookie", "value": "HttpOnly;Secure;SameSite=Strict"},
+        {"key": "contentType", "value": "application/json"},
+        {"key": "Access-Control-Allow-Origin", "value": "*"}] }
+    ],
     "rewrites": [
       {
         "source": "**",
