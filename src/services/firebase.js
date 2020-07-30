@@ -13,6 +13,6 @@ var firebaseConfig = {
   };
 
 var app = firebase.initializeApp(firebaseConfig);
-app.auth().signInAnonymously();
 
+export const auth = firebase.auth;
 export default firebase;
